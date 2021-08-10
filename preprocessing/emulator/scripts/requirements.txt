@@ -1,0 +1,14 @@
+numpy
+mako
+scikit-image
+pandas
+ipython
+jupyter
+notebook
+matplotlib
+wandb
+tables
+scipy
+pint
+pyDOE
+tqdm

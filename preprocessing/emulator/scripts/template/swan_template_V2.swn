@@ -1,0 +1,47 @@
+$************************* ${'%s' % fname} ************************ 
+
+$ template
+
+
+$******************************************************************
+
+PROJECT 'emulator','' 
+
+$------------- algemeen -----------
+
+SET     LEVEL=${'%2.2f' % water_level} MAXERR=2 RHO=1000 CDCAP=0.00275 NAUTICAL
+MODE    STATIONARY TWODIMENSIONAL
+COORDS  CART
+
+
+
+$------------- invoer -----------
+
+CGRID   XPC=0 YPC=0 ALPC=0  XLENC=10 YLENC=10 &
+        MXC=255   MYC=255     CIRCLE   MDC=32 FLOW=0.06 FHIGH=2.4
+
+INPGRID BOT XPINP=0 YPINP=0 ALPINP=0 MXINP=255  MYINP=255 DXINP=10. DYINP=10. EXC=999.0
+READINP BOT -1.0 'bathy.dep' IDLA=5 NHEDF=0 FREE 
+
+WIND	${'%2.2f' % wind_speed}    ${'%2.2f' % wind_dir}  DRAG  WU
+
+BOUnd SHAPespec JONswap  PEAK DSPR POWER
+
+BOUndspec  SIDE North CONSTANT PAR ${'%2.2f' % wave_height} ${'%2.2f' % wave_period} ${'%2.2f' % wave_dir}
+BOUndspec  SIDE South CONSTANT PAR ${'%2.2f' % wave_height} ${'%2.2f' % wave_period} ${'%2.2f' % wave_dir}
+BOUndspec  SIDE East  CONSTANT PAR ${'%2.2f' % wave_height} ${'%2.2f' % wave_period} ${'%2.2f' % wave_dir}
+BOUndspec  SIDE West  CONSTANT PAR ${'%2.2f' % wave_height} ${'%2.2f' % wave_period} ${'%2.2f' % wave_dir}
+
+$------------- fysica & numeriek -----------
+
+
+NUMERIC STOPC DABS=0.005 DREL=0.01 CURVAT=0.001 NPNTS=101 STAT MXITST=80 ALFA=0.001
+ 
+$------------- uitvoer -----------
+
+BLOCK   'COMPGRID'  NOHEAD  'results/${'%s' % fname}.nc' LAY-OUT 3 &
+         XP YP BOTLEV HSIG TPS RTP TMM10 TM01 TM02 DIR DSPR DHS DRTM01 WATLEV WIND WLEN
+
+
+COMPUTE STATIONARY
+STOP
