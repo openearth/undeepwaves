@@ -1,0 +1,18 @@
+{
+    "XP": "x -coordinate",
+    "YP": "y -coordinate",
+    "BOTLEV": "bottom level (in m)",
+    "HSIG": "significant wave height (in m)",
+    "TPS": "'smoothed' peak period (in s)",
+    "RTP": "peak period (in s) of the variance density spectrum (relative frequency spectrum)",
+    "TMM10": "mean absolute wave period (in s)",
+    "TM01": "mean absolute wave period (in s)",
+    "TM02": "mean absolute zero-crossing period (in s)",
+    "DIR": "mean wave direction",
+    "DSPR": "directional spreading of the waves (in degrees)",
+    "DHS": "directional spreading of the significant wave height??",
+    "DRTM01": "the difference in average wave period (RTM01) as computed in the last two iterations",
+    "WATLEV": "water level (in m)",
+    "WIND": "wind velocity (vector; in m/s) -> Vect",
+    "WLEN": "average wave length (in m)"
+}
