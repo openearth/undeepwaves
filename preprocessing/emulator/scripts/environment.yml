@@ -1,0 +1,12 @@
+name: undeepwave
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - tqdm
+  - pint
+  - matplotlib
+  - rasterio
+  - scipy
+  - pyDOE
