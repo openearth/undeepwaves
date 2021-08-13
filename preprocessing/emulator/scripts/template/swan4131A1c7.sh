@@ -1,15 +1,6 @@
 #!/bin/sh
-module load netcdf
-module load mpich
-
-echo "ld path" $LD_LIBRARY_PATH
-
-export PATH=$PATH:~/opt/bin
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/opt/lib 
-source /home/deltares/venvs/main/bin/activate 
-
-# python register_run.py
-
+module load swan/41.31A.1_intel18.0.3
+swan_omp_exe=swan_4131A_1_del_l64_i18_omp.exe
 
 export OMP_NUM_THREADS=4
 

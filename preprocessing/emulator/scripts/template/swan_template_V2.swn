@@ -42,6 +42,8 @@ $------------- uitvoer -----------
 BLOCK   'COMPGRID'  NOHEAD  'results/${'%s' % fname}.nc' LAY-OUT 3 &
          XP YP BOTLEV HSIG TPS RTP TMM10 TM01 TM02 DIR DSPR DHS DRTM01 WATLEV WIND WLEN
 
+POINTS  'T1' FILE '../inp/points.txt
+SPEC    'T1' SPEC2D ABS 'results/${'%s' % fname}.nc''
 
 COMPUTE STATIONARY
 STOP
