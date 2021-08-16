@@ -17,7 +17,7 @@ echo ----------------------------------------------------------------------
 ### General, start SWAN.
 cp "$1".swn INPUT
 
-mpirun -np 8 swan.exe
+mpirun -np 8 $swan_omp_exe
 echo simulation ended 
 rm swaninit
 
