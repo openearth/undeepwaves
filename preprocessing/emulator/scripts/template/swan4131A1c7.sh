@@ -24,7 +24,10 @@ echo ----------------------------------------------------------------------
 ### General, start SWAN.
 cp "$1".swn INPUT
 
+starttime=`date +%s`
 $swan_omp_exe
+endtime=`date +%s`
+
 rm swaninit
 
 cp PRINT "$1".prt 
