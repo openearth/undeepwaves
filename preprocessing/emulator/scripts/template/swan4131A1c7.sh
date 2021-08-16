@@ -28,6 +28,11 @@ starttime=`date +%s`
 $swan_omp_exe
 endtime=`date +%s`
 
+runtime=$((endtime-starttime))
+echo ----------------------------------------------------------------------
+echo "The run was completed after $((runtime / 60)) minutes"
+echo ----------------------------------------------------------------------
+
 rm swaninit
 
 cp PRINT "$1".prt 
