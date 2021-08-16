@@ -211,13 +211,11 @@ def main(bathy, bathy_folder, output, id, samples):
         examples['bathy_file'] = itemgetter(*examples['$bathy_i$'].tolist())(bathy_list)
         bathy_arrays = []
         for i, file in enumerate(examples['bathy_file']):
-            print(f'bathymetry {i}, {file}')    
             src = rasterio.open(examples['bathy_file'][i])
             array = src.read(1)
             array -= np.nanmean(array)
             # fill nan with 999 this is execption value in swan
             array = np.nan_to_num(array, nan=999)
-            print(array)
             bathy_arrays.append(array)
 
         examples['bathy'] = bathy_arrays
@@ -226,7 +224,6 @@ def main(bathy, bathy_folder, output, id, samples):
         bathy_arrays = []
         for rot_z in examples["$\theta_{bathy, z}$"]:
             z = create_bathy(rot_z=rot_z)
-            print(z.shape)
             bathy_arrays.append(z)
         examples['bathy'] = bathy_arrays
 
