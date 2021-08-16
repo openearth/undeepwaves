@@ -246,7 +246,6 @@ def main(bathy, bathy_folder, output, id, samples):
     #Write hdf5
 
     examples.to_hdf(output_folder, 'runs')
-    print(examples)
 
     # =============================================================================
     # 1. input
