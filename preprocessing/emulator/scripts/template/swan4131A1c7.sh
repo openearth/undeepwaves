@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -V
 #$ -j yes
-#$ -q normal-e3
+#$ -q normal-e3-c7
 #$ -cwd
 
 cd $SGE_O_WORKDIR
