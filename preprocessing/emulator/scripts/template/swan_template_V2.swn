@@ -35,7 +35,7 @@ BOUndspec  SIDE West  CONSTANT PAR ${'%2.2f' % wave_height} ${'%2.2f' % wave_per
 $------------- fysica & numeriek -----------
 
 
-NUMERIC STOPC DABS=0.005 DREL=0.01 CURVAT=0.001 NPNTS=101 STAT MXITST=80 ALFA=0.001
+NUMERIC STOPC DABS=0.005 DREL=0.01 CURVAT=0.001 NPNTS=101 STAT MXITST=40 ALFA=0.001
  
 $------------- uitvoer -----------
 
