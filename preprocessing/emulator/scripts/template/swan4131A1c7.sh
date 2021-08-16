@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+#$ -V
+#$ -j yes
+#$ -q normal-e3
+#$ -cwd
+
+cd $SGE_O_WORKDIR
+
 module load swan/41.31A.1_intel18.0.3
 swan_omp_exe=swan_4131A_1_del_l64_i18_omp.exe
 
@@ -18,7 +25,6 @@ echo ----------------------------------------------------------------------
 cp "$1".swn INPUT
 
 $swan_omp_exe
-echo simulation ended 
 rm swaninit
 
 cp PRINT "$1".prt 
