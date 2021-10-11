@@ -17,7 +17,7 @@ COORDS  CART
 
 $------------- invoer -----------
 
-CGRID   XPC=0 YPC=0 ALPC=0  XLENC=10 YLENC=10 &
+CGRID   XPC=0 YPC=0 ALPC=0  XLENC=2560 YLENC=2560 &
         MXC=255   MYC=255     CIRCLE   MDC=32 FLOW=0.06 FHIGH=2.4
 
 INPGRID BOT XPINP=0 YPINP=0 ALPINP=0 MXINP=255  MYINP=255 DXINP=10. DYINP=10. EXC=999.0
@@ -42,8 +42,8 @@ $------------- uitvoer -----------
 BLOCK   'COMPGRID'  NOHEAD  'results/${'%s' % fname}.nc' LAY-OUT 3 &
          XP YP BOTLEV HSIG TPS RTP TMM10 TM01 TM02 DIR DSPR DHS DRTM01 WATLEV WIND WLEN
 
-POINTS  'T1' FILE '../inp/points.txt
-SPEC    'T1' SPEC2D ABS 'results/${'%s' % fname}.nc''
+POINTS  'T1' FILE 'points.txt'
+SPEC    'T1' SPEC2D ABS 'results/${'%s' % fname}-fr.nc'
 
 COMPUTE STATIONARY
 STOP

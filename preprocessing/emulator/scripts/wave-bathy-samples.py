@@ -143,12 +143,12 @@ def main(bathy, bathy_folder, output, id, samples):
     # In[8]:
 
 
-    def create_bathy(rot_z, rot_xy=0):
+    def create_bathy(rot_z):
         width = 256
         dx = 10
         op_by_adj = np.tan(np.deg2rad(rot_z)) 
         height = op_by_adj * np.arange(width) * dx
-        z = np.tile(height, [width * 2, 1])
+        z = np.tile(height, [width, 1])
         z = z - np.max(z)
 
         return z
@@ -210,18 +210,20 @@ def main(bathy, bathy_folder, output, id, samples):
         examples['$bathy_i$'] = np.int32(examples['$bathy_i$'])
         examples['bathy_file'] = itemgetter(*examples['$bathy_i$'].tolist())(bathy_list)
         bathy_arrays = []
-        for i, file in enumerate(examples['bathy_file']):    
+        for i, file in enumerate(examples['bathy_file']):
             src = rasterio.open(examples['bathy_file'][i])
             array = src.read(1)
-            array -= array.mean()
+            array -= np.nanmean(array)
+            # fill nan with 999 this is execption value in swan
+            array = np.nan_to_num(array, nan=999)
             bathy_arrays.append(array)
-            
+
         examples['bathy'] = bathy_arrays
 
     if bathy == 'schematic':
         bathy_arrays = []
         for rot_z in examples["$\theta_{bathy, z}$"]:
-            z = create_bathy(rot_z=rot_z, rot_xy=0)
+            z = create_bathy(rot_z=rot_z)
             bathy_arrays.append(z)
         examples['bathy'] = bathy_arrays
 
@@ -244,7 +246,6 @@ def main(bathy, bathy_folder, output, id, samples):
     #Write hdf5
 
     examples.to_hdf(output_folder, 'runs')
-    print(examples)
 
     # =============================================================================
     # 1. input
@@ -335,7 +336,9 @@ def main(bathy, bathy_folder, output, id, samples):
         copyfile(os.path.join('template','swan4131A1c7.sh'), os.path.join(path_sim,'swan4131A1c7.sh'))
         copymode(os.path.join('template','swan4131A1c7.sh'), os.path.join(path_sim,'swan4131A1c7.sh'))
         copyfile(os.path.join('template','register_run.py'), os.path.join(path_sim,'register_run.py'))
+        copyfile(os.path.join('template','points.txt'), os.path.join(path_sim,'points.txt'))
 
+        
         Z = item['bathy']
         np.savetxt(os.path.join(path_sim, 'bathy.dep'), Z)
         ## add sim to batch script
