@@ -59,7 +59,7 @@ def main(bathy, bathy_folder, output, id, samples):
 
 
 
-    # ## Grid 
+    # ## Grid
     # We pick a general grid of 256, 256 cells of 10x10 meter. These are constants.
 
     # In[3]:
@@ -74,9 +74,9 @@ def main(bathy, bathy_folder, output, id, samples):
 
 
     # ## Waterlevel
-    # We generate water levels varying from 1 to 50 meters. This is enough for wave lengths of up to 100m (similar to ~700km fetch, 60km/h wind, for 30 hours) to not "feel the bottom". Bathymetries are subtracted from this level. 
-    # 
-    # 
+    # We generate water levels varying from 1 to 50 meters. This is enough for wave lengths of up to 100m (similar to ~700km fetch, 60km/h wind, for 30 hours) to not "feel the bottom". Bathymetries are subtracted from this level.
+    #
+    #
 
     # In[4]:
 
@@ -84,14 +84,14 @@ def main(bathy, bathy_folder, output, id, samples):
     water_level = {"$\eta$": {"min": 1 * ureg.meter, "max": 50 * ureg.meter, "type": "uniform"}}
 
 
-    # ## Waves 
-    # We take a jonswap spectrum where we only vary the modal frequency ($\omega$) and the wave angle ($\theta_{wave}$). We compute $\omega$ based the significant wave height ($\zeta$). 
+    # ## Waves
+    # We take a jonswap spectrum where we only vary the modal frequency ($\omega$) and the wave angle ($\theta_{wave}$). We compute $\omega$ based the significant wave height ($\zeta$).
 
     # In[5]:
 
 
     # TODO: Hm0 (modus significant wave height)
-    # TODO: Wave Period 
+    # TODO: Wave Period
     # TODO: check wave steilheid als invoer
     # TODO:  check distribution from measurements
 
@@ -100,9 +100,9 @@ def main(bathy, bathy_folder, output, id, samples):
     #     g = Q_(9.81, 'm/s^2')
     #     omega = 0.4 * np.sqrt(g / wave_height)
     #     return omega
-        
+
     # waves['$\omega$'] = {
-    #     "min": wave_height_to_omega(waves['$\zeta$']['min']), 
+    #     "min": wave_height_to_omega(waves['$\zeta$']['min']),
     #     "max": wave_height_to_omega(waves['$\zeta$']['max']),
     #     "type": "uniform"
     # }
@@ -115,7 +115,7 @@ def main(bathy, bathy_folder, output, id, samples):
 
 
     # ## Bathymetry
-    # For the bathymetry we have a collection of bathymetries with varying slope and another collection of random sampled bathymetries of around the world. 
+    # For the bathymetry we have a collection of bathymetries with varying slope and another collection of random sampled bathymetries of around the world.
 
     # In[6]:
 
@@ -146,7 +146,7 @@ def main(bathy, bathy_folder, output, id, samples):
     def create_bathy(rot_z):
         width = 256
         dx = 10
-        op_by_adj = np.tan(np.deg2rad(rot_z)) 
+        op_by_adj = np.tan(np.deg2rad(rot_z))
         height = op_by_adj * np.arange(width) * dx
         z = np.tile(height, [width, 1])
         z = z - np.max(z)
@@ -292,7 +292,8 @@ def main(bathy, bathy_folder, output, id, samples):
     for ii, item in tqdm(df.iterrows()):
         ## get conditions
         # convert to native python type (for compatibility with decimal)
-        wave_dir    = float(item['$\theta_{wave}$'])
+        # convert waves to radians
+        wave_dir    = np.rad2deg(float(item['$\theta_{wave}$']))
         wave_height  = float(item['$\zeta$'])
         water_level = float(item['$\eta$'])
 
@@ -300,7 +301,7 @@ def main(bathy, bathy_folder, output, id, samples):
 
         ## sim path
         path_sim = os.path.join(path_sims, fname)
-        
+
         ## make dir
         if not os.path.exists(path_sim):
             os.makedirs(path_sim)
@@ -308,10 +309,10 @@ def main(bathy, bathy_folder, output, id, samples):
         else:
             print('path exist:',fname)
 
-     
+
         # write parameters
         item.to_json(os.path.join(path_sim, 'parameters.json'), default_handler=str)
-        
+
         ## data for template
         data = {'output_path':path_sim,
                 'extension':'swn',
@@ -325,7 +326,7 @@ def main(bathy, bathy_folder, output, id, samples):
                 'water_level': water_level,
                 'variant':variant
         }
-        
+
         ## skip if file already exists
         if os.path.exists(os.path.join(path_sim, '{}.swn'.format(fname))) and overwrite:
             print('skipped {}'.format(fname))
@@ -338,7 +339,7 @@ def main(bathy, bathy_folder, output, id, samples):
         copyfile(os.path.join('template','register_run.py'), os.path.join(path_sim,'register_run.py'))
         copyfile(os.path.join('template','points.txt'), os.path.join(path_sim,'points.txt'))
 
-        
+
         Z = item['bathy']
         np.savetxt(os.path.join(path_sim, 'bathy.dep'), Z)
         ## add sim to batch script
@@ -355,4 +356,3 @@ def main(bathy, bathy_folder, output, id, samples):
 
 if __name__ == '__main__':
     main()
-
